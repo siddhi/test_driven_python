@@ -22,3 +22,9 @@ class StockTest(unittest.TestCase):
         goog = Stock("GOOG")
         with self.assertRaises(ValueError):
             goog.update(datetime(2014, 2, 13), -1)
+
+    def test_stock_price_should_give_the_latest_price(self):
+        goog = Stock("GOOG")
+        goog.update(datetime(2014, 2, 12), price=10)
+        goog.update(datetime(2014, 2, 13), price=8.4)
+        self.assertAlmostEqual(8.4, goog.price, delta=0.0001)
