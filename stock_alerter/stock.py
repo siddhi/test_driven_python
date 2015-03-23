@@ -35,12 +35,8 @@ class Stock:
             self.price_history[-2].price < self.price_history[-1].price
 
     def _get_closing_price_list(self, on_date, num_days):
-        pass
-
-    def get_crossover_signal(self, on_date):
         closing_price_list = []
-        NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
-        for i in range(NUM_DAYS):
+        for i in range(num_days):
             chk = on_date.date() - timedelta(i)
             for price_event in reversed(self.price_history):
                 if price_event.timestamp.date() > chk:
@@ -51,6 +47,11 @@ class Stock:
                 if price_event.timestamp.date() < chk:
                     closing_price_list.insert(0, price_event)
                     break
+        return closing_price_list
+
+    def get_crossover_signal(self, on_date):
+        NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
+        closing_price_list = self._get_closing_price_list(on_date, NUM_DAYS)
 
         # Return NEUTRAL signal
         if len(closing_price_list) < NUM_DAYS:
