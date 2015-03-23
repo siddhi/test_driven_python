@@ -5,7 +5,7 @@ from .rule import PriceRule
 
 
 class AlertProcessor:
-    def __init__(self):
+    def __init__(self, autorun=True):
         self.exchange = {"GOOG": Stock("GOOG"), "AAPL": Stock("AAPL")}
         rule_1 = PriceRule("GOOG", lambda stock: stock.price > 10)
         rule_2 = PriceRule("AAPL", lambda stock: stock.price > 5)
@@ -15,7 +15,8 @@ class AlertProcessor:
         self.exchange["AAPL"].updated.connect(
             lambda stock: print(stock.symbol, stock.price) \
                           if rule_2.matches(self.exchange) else None)
-        self.run()
+        if autorun:
+            self.run()
 
     def run(self):
         updates = []
