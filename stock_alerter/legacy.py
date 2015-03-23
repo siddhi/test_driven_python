@@ -5,8 +5,11 @@ from .rule import PriceRule
 
 
 class AlertProcessor:
-    def __init__(self, autorun=True):
-        self.exchange = {"GOOG": Stock("GOOG"), "AAPL": Stock("AAPL")}
+    def __init__(self, autorun=True, exchange=None):
+        if exchange is None:
+            self.exchange = {"GOOG": Stock("GOOG"), "AAPL": Stock("AAPL")}
+        else:
+            self.exchange = exchange
         rule_1 = PriceRule("GOOG", lambda stock: stock.price > 10)
         rule_2 = PriceRule("AAPL", lambda stock: stock.price > 5)
         self.exchange["GOOG"].updated.connect(
