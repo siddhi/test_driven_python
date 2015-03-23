@@ -49,17 +49,9 @@ class Stock:
                     break
         return closing_price_list
 
-    def _is_short_term_crossover_below_to_above(self, prev_short_term_ma,
-                                                prev_long_term_ma,
-                                                short_term_ma,
-                                                long_term_ma):
-        return prev_long_term_ma > prev_short_term_ma and long_term_ma < short_term_ma
-
-    def _is_short_term_crossover_above_to_below(self, prev_short_term_ma,
-                                                prev_long_term_ma,
-                                                short_term_ma,
-                                                long_term_ma):
-        return prev_short_term_ma > prev_long_term_ma and short_term_ma < long_term_ma
+    def _is_crossover_below_to_above(self, prev_ma, prev_reference_ma,
+                                     current_ma, current_reference_ma):
+        return prev_ma < prev_reference_ma and current_ma > current_reference_ma
 
     def get_crossover_signal(self, on_date):
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
@@ -82,12 +74,12 @@ class Stock:
         prev_short_term_ma = sum([update.price
                                   for update in prev_short_term_series])/self.SHORT_TERM_TIMESPAN
 
-        if self._is_short_term_crossover_below_to_above(prev_short_term_ma, prev_long_term_ma,
-                                                        short_term_ma, long_term_ma):
+        if self._is_crossover_below_to_above(prev_short_term_ma, prev_long_term_ma,
+                                             short_term_ma, long_term_ma):
                 return StockSignal.buy
 
-        if self._is_short_term_crossover_above_to_below(prev_short_term_ma, prev_long_term_ma,
-                                                        short_term_ma, long_term_ma):
+        if self._is_crossover_below_to_above(prev_long_term_ma, prev_short_term_ma,
+                                             long_term_ma, short_term_ma):
                 return StockSignal.sell
 
         return StockSignal.neutral
