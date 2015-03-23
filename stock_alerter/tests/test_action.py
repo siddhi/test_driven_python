@@ -30,3 +30,12 @@ class EmailActionTest(unittest.TestCase):
         mock_smtp.assert_has_calls([
             mock.call.send_message(mock.ANY),
             mock.call.quit()])
+
+    def test_connection_closed_if_send_gives_error(self, mock_smtp_class):
+        mock_smtp = mock_smtp_class.return_value
+        mock_smtp.send_message.side_effect = smtplib.SMTPServerDisconnected()
+        try:
+            self.action.execute("MSFT has crossed $10 price level")
+        except Exception:
+            pass
+        self.assertTrue(mock_smtp.quit.called)
