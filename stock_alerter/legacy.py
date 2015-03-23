@@ -15,6 +15,9 @@ class AlertProcessor:
         self.exchange["AAPL"].updated.connect(
             lambda stock: print(stock.symbol, stock.price) \
                           if rule_2.matches(self.exchange) else None)
+        self.run()
+
+    def run(self):
         updates = []
         with open("updates.csv", "r") as fp:
             for line in fp.readlines():
