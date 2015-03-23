@@ -5,6 +5,10 @@ from datetime import timedelta
 Update = collections.namedtuple("Update", ["timestamp", "value"])
 
 
+class NotEnoughDataException(Exception):
+    pass
+
+
 class TimeSeries:
     def __init__(self):
         self.series = []
@@ -35,3 +39,10 @@ class MovingAverage:
     def __init__(self, series, timespan):
         self.series = series
         self.timespan = timespan
+
+    def value_on(self, end_date, timespan):
+        moving_avg_series = self.series.get_closing_price_list(end_date, timespan)
+        if len(moving_avg_series) < timespan:
+            raise NotEnoughDataException("Not enough data to calculate moving average")
+        price_list = [update.value for update in moving_avg_series]
+        return sum(price_list)/timespan
