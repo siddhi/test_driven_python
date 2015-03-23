@@ -28,6 +28,11 @@ class StockTest(unittest.TestCase):
         self.goog.update(datetime(2014, 2, 13), price=8.4)
         self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
 
+    def test_price_is_the_latest_even_if_updates_are_made_out_of_order(self):
+        self.goog.update(datetime(2014, 2, 13), price=8)
+        self.goog.update(datetime(2014, 2, 12), price=10)
+        self.assertEqual(8, self.goog.price)
+
 
 class StockTrendTest(unittest.TestCase):
     def setUp(self):
