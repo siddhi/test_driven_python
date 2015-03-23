@@ -1,0 +1,6 @@
+__pycache__
+.ropeproject
+*.swp
+*.pyc
+dist
+StockAlerter.egg-info
