@@ -5,6 +5,17 @@ from unittest import mock
 from ..action import PrintAction, EmailAction
 
 
+class MessageMatcher:
+    def __init__(self, expected):
+        self.expected = expected
+
+    def __eq__(self, other):
+        return self.expected["Subject"] == other["Subject"] and \
+            self.expected["From"] == other["From"] and \
+            self.expected["To"] == other["To"] and \
+            self.expected["Message"] == other._payload
+
+
 @mock.patch("builtins.print")
 class PrintActionTest(unittest.TestCase):
     def test_executing_action_prints_message(self, mock_print):
@@ -46,3 +57,15 @@ class EmailActionTest(unittest.TestCase):
         call_args, _ = mock_smtp.send_message.call_args
         sent_message = call_args[0]
         self.assertEqual("New Stock Alert", sent_message["Subject"])
+
+    def test_email_is_sent_when_action_is_executed(self, mock_smtp_class):
+        expected_message = {
+            "Subject": "New Stock Alert",
+            "Message": "MSFT has crossed $10 price level",
+            "To": "siddharta@silverstripesoftware.com",
+            "From": "alerts@stocks.com"
+        }
+        mock_smtp = mock_smtp_class.return_value
+        self.action.execute("MSFT has crossed $10 price level")
+        mock_smtp.send_message.assert_called_with(
+            MessageMatcher(expected_message))
