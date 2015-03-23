@@ -34,6 +34,9 @@ class Stock:
         return self.price_history[-3].price < \
             self.price_history[-2].price < self.price_history[-1].price
 
+    def _get_closing_price_list(self, on_date, num_days):
+        pass
+
     def get_crossover_signal(self, on_date):
         closing_price_list = []
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
