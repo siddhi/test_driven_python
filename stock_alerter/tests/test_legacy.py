@@ -91,3 +91,12 @@ class AlertProcessorTest(unittest.TestCase):
         processor.do_updates([
             ('GOOG', datetime(2014, 2, 11, 14, 12, 22, 130000), 15)])
         self.assertTrue(processor.print_action.called)
+
+    def test_processor_gets_values_from_reader(self):
+        mock_reader = mock.MagicMock()
+        mock_reader.parse_file.return_value = \
+            [('GOOG', datetime(2014, 2, 11, 14, 12, 22, 130000), 15)]
+        processor = AlertProcessor(autorun=False, reader=mock_reader)
+        processor.print_action = mock.Mock()
+        processor.run()
+        self.assertTrue(processor.print_action.called)
