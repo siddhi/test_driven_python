@@ -39,3 +39,10 @@ class EmailActionTest(unittest.TestCase):
         except Exception:
             pass
         self.assertTrue(mock_smtp.quit.called)
+
+    def test_email_is_sent_with_the_right_subject(self, mock_smtp_class):
+        mock_smtp = mock_smtp_class.return_value
+        self.action.execute("MSFT has crossed $10 price level")
+        call_args, _ = mock_smtp.send_message.call_args
+        sent_message = call_args[0]
+        self.assertEqual("New Stock Alert", sent_message["Subject"])
