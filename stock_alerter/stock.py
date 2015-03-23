@@ -53,22 +53,22 @@ class Stock:
         return prev_ma < prev_reference_ma and current_ma > current_reference_ma
 
     def get_crossover_signal(self, on_date):
+        prev_date = on_date - timedelta(1)
         long_term_ma = MovingAverage(self.history, self.LONG_TERM_TIMESPAN)
         short_term_ma = MovingAverage(self.history, self.SHORT_TERM_TIMESPAN)
         try:
-            long_term_ma_value = long_term_ma.value_on(on_date)
-            prev_long_term_ma_value = long_term_ma.value_on(on_date-timedelta(1))
-            short_term_ma_value = short_term_ma.value_on(on_date)
-            prev_short_term_ma_value = short_term_ma.value_on(on_date-timedelta(1))
+            if self._is_crossover_below_to_above(short_term_ma.value_on(prev_date),
+                                                 long_term_ma.value_on(prev_date),
+                                                 short_term_ma.value_on(on_date),
+                                                 long_term_ma.value_on(on_date)):
+                    return StockSignal.buy
+
+            if self._is_crossover_below_to_above(long_term_ma.value_on(prev_date),
+                                                 short_term_ma.value_on(prev_date),
+                                                 long_term_ma.value_on(on_date),
+                                                 short_term_ma.value_on(on_date)):
+                    return StockSignal.sell
         except NotEnoughDataException:
             return StockSignal.neutral
-
-        if self._is_crossover_below_to_above(prev_short_term_ma_value, prev_long_term_ma_value,
-                                             short_term_ma_value, long_term_ma_value):
-                return StockSignal.buy
-
-        if self._is_crossover_below_to_above(prev_long_term_ma_value, prev_short_term_ma_value,
-                                             long_term_ma_value, short_term_ma_value):
-                return StockSignal.sell
 
         return StockSignal.neutral
