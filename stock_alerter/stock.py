@@ -60,7 +60,7 @@ class Stock:
 
     def get_crossover_signal(self, on_date):
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
-        closing_price_list = self.history.get_closing_price_list(on_date, NUM_DAYS, self.price_history)
+        closing_price_list = self.history.get_closing_price_list(on_date, NUM_DAYS)
 
         if len(closing_price_list) < NUM_DAYS:
             return StockSignal.neutral
