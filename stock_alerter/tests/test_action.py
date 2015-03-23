@@ -6,11 +6,7 @@ from ..action import PrintAction
 
 class PrintActionTest(unittest.TestCase):
     def test_executing_action_prints_message(self):
-        patcher = mock.patch('builtins.print')
-        mock_print = patcher.start()
-        try:
+        with mock.patch('builtins.print') as mock_print:
             action = PrintAction()
             action.execute("GOOG > $10")
             mock_print.assert_called_with("GOOG > $10")
-        finally:
-            patcher.stop()
