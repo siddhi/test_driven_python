@@ -12,14 +12,14 @@ class AlertProcessor:
             self.exchange = exchange
         rule_1 = PriceRule("GOOG", lambda stock: stock.price > 10)
         rule_2 = PriceRule("AAPL", lambda stock: stock.price > 5)
-        self.exchange["GOOG"].updated.connect(
-            lambda stock: print(stock.symbol, stock.price) \
-                          if rule_1.matches(self.exchange) else None)
-        self.exchange["AAPL"].updated.connect(
-            lambda stock: print(stock.symbol, stock.price) \
-                          if rule_2.matches(self.exchange) else None)
+        self.exchange["GOOG"].updated.connect(lambda stock: self.print_action(stock, rule_1))
+        self.exchange["AAPL"].updated.connect(lambda stock: self.print_action(stock, rule_2))
         if autorun:
             self.run()
+
+    def print_action(self, stock, rule):
+        print(stock.symbol, stock.price) \
+            if rule.matches(self.exchange) else None
 
     def do_updates(self, updates):
         for symbol, timestamp, price in updates:
