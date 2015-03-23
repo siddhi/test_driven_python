@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 
 from ..event import Event
 
@@ -14,7 +15,7 @@ class Mock:
 
 class EventTest(unittest.TestCase):
     def test_a_listener_is_notified_when_an_event_is_raised(self):
-        listener = Mock()
+        listener = mock.Mock()
         event = Event()
         event.connect(listener)
         event.fire()
