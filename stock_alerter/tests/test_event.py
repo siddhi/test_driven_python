@@ -14,3 +14,14 @@ class EventTest(unittest.TestCase):
         event.connect(listener)
         event.fire()
         self.assertTrue(called)
+
+    def test_a_listener_is_passed_right_parameters(self):
+        params = ()
+        def listener(*args, **kwargs):
+            nonlocal params
+            params = (args, kwargs)
+
+        event = Event()
+        event.connect(listener)
+        event.fire(5, shape="square")
+        self.assertEqual(((5, ), {"shape":"square"}), params)
