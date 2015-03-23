@@ -66,3 +66,12 @@ class AlertProcessorTest(unittest.TestCase):
             ('GOOG', datetime(2014, 2, 11, 14, 12, 22, 130000), 15),
             ('AAPL', datetime(2014, 2, 11, 0, 0), 10),
             ('GOOG', datetime(2014, 2, 11, 14, 15, 22, 130000), 21)])
+
+    def test_processor_characterization_7(self):
+        processor = AlertProcessor(autorun=False)
+        processor.parse_file = mock.Mock()
+        processor.parse_file.return_value = [
+            ('GOOG', datetime(2014, 2, 11, 14, 12, 22, 130000), 15)]
+        with mock.patch("builtins.print") as mock_print:
+            processor.run()
+        mock_print.assert_called_with("GOOG", 15)
