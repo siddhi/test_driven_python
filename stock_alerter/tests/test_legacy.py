@@ -84,3 +84,10 @@ class AlertProcessorTest(unittest.TestCase):
         with mock.patch("builtins.print") as mock_print:
             processor.run()
         self.assertFalse(mock_print.called)
+
+    def test_processor_characterization_9(self):
+        processor = AlertProcessor(autorun=False)
+        processor.print_action = mock.Mock()
+        processor.do_updates([
+            ('GOOG', datetime(2014, 2, 11, 14, 12, 22, 130000), 15)])
+        self.assertTrue(processor.print_action.called)
