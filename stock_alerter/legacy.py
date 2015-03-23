@@ -18,6 +18,11 @@ class AlertProcessor:
         if autorun:
             self.run()
 
+    def do_updates(self, updates):
+        for symbol, timestamp, price in updates:
+            stock = self.exchange[symbol]
+            stock.update(timestamp, price)
+
     def run(self):
         updates = []
         with open("updates.csv", "r") as fp:
@@ -26,6 +31,4 @@ class AlertProcessor:
                 updates.append((symbol,
                        datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f"),
                        int(price)))
-        for symbol, timestamp, price in updates:
-            stock = self.exchange[symbol]
-            stock.update(timestamp, price)
+        self.do_updates(updates)
