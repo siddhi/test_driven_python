@@ -32,6 +32,7 @@ class Stock:
         if price < 0:
             raise ValueError("price should not be negative")
         bisect.insort_left(self.price_history, PriceEvent(timestamp, price))
+        self.history.update(timestamp, price)
 
     def is_increasing_trend(self):
         return self.price_history[-3].price < \
