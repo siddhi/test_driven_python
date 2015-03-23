@@ -59,7 +59,7 @@ class Stock:
                                                 prev_long_term_ma,
                                                 short_term_ma,
                                                 long_term_ma):
-        return prev_long_term_ma < prev_short_term_ma and long_term_ma > short_term_ma
+        return prev_short_term_ma > prev_long_term_ma and short_term_ma < long_term_ma
 
     def get_crossover_signal(self, on_date):
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
