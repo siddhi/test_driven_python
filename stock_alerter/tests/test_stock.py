@@ -27,3 +27,11 @@ class StockTest(unittest.TestCase):
         self.goog.update(datetime(2014, 2, 12), price=10)
         self.goog.update(datetime(2014, 2, 13), price=8.4)
         self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
+
+    def test_increasing_trend_is_true_if_price_increase_for_3_updates(self):
+        timestamps = [datetime(2014, 2, 11), datetime(2014, 2, 12),
+                      datetime(2014, 2, 13)]
+        prices = [8, 10, 12]
+        for timestamp, price in zip(timestamps, prices):
+            self.goog.update(timestamp, price)
+        self.assertTrue(self.goog.is_increasing_trend())
