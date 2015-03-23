@@ -10,6 +10,10 @@ class StockSignal(Enum):
     sell = -1
 
 
+class NotEnoughDataException(Exception):
+    pass
+
+
 class Stock:
     LONG_TERM_TIMESPAN = 10
     SHORT_TERM_TIMESPAN = 5
@@ -52,6 +56,13 @@ class Stock:
                                      current_ma, current_reference_ma):
         return prev_ma < prev_reference_ma and current_ma > current_reference_ma
 
+    def _value_on(self, end_date, timespan):
+        moving_avg_series = self.history.get_closing_price_list(end_date, timespan)
+        if len(moving_avg_series) < timespan:
+            raise NotEnoughDataException("Not enough data to calculate moving average")
+        price_list = [update.value for update in moving_avg_series]
+        return sum(price_list)/timespan
+
     def get_crossover_signal(self, on_date):
         NUM_DAYS = self.LONG_TERM_TIMESPAN + 1
         closing_price_list = self.history.get_closing_price_list(on_date, NUM_DAYS)
@@ -64,14 +75,13 @@ class Stock:
         short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN:]
         prev_short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN-1:-1]
 
-        long_term_ma = sum([update.value
-                            for update in long_term_series])/self.LONG_TERM_TIMESPAN
-        prev_long_term_ma = sum([update.value
-                                 for update in prev_long_term_series])/self.LONG_TERM_TIMESPAN
-        short_term_ma = sum([update.value
-                             for update in short_term_series])/self.SHORT_TERM_TIMESPAN
-        prev_short_term_ma = sum([update.value
-                                  for update in prev_short_term_series])/self.SHORT_TERM_TIMESPAN
+        try:
+            long_term_ma = self._value_on(on_date, self.LONG_TERM_TIMESPAN)
+            prev_long_term_ma = self._value_on(on_date-timedelta(1), self.LONG_TERM_TIMESPAN)
+            short_term_ma = self._value_on(on_date, self.SHORT_TERM_TIMESPAN)
+            prev_short_term_ma = self._value_on(on_date-timedelta(1), self.SHORT_TERM_TIMESPAN)
+        except NotEnoughDataException:
+            pass
 
         if self._is_crossover_below_to_above(prev_short_term_ma, prev_long_term_ma,
                                              short_term_ma, long_term_ma):
