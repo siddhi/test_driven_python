@@ -32,4 +32,6 @@ class TimeSeries:
 
 
 class MovingAverage:
-    pass
+    def __init__(self, series, timespan):
+        self.series = series
+        self.timespan = timespan
