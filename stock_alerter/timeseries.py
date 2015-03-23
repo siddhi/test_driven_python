@@ -40,9 +40,9 @@ class MovingAverage:
         self.series = series
         self.timespan = timespan
 
-    def value_on(self, end_date, timespan):
-        moving_avg_series = self.series.get_closing_price_list(end_date, timespan)
-        if len(moving_avg_series) < timespan:
+    def value_on(self, end_date):
+        moving_avg_series = self.series.get_closing_price_list(end_date, self.timespan)
+        if len(moving_avg_series) < self.timespan:
             raise NotEnoughDataException("Not enough data to calculate moving average")
         price_list = [update.value for update in moving_avg_series]
-        return sum(price_list)/timespan
+        return sum(price_list)/self.timespan

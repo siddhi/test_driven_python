@@ -56,10 +56,10 @@ class Stock:
         long_term_ma = MovingAverage(self.history, self.LONG_TERM_TIMESPAN)
         short_term_ma = MovingAverage(self.history, self.SHORT_TERM_TIMESPAN)
         try:
-            long_term_ma_value = long_term_ma.value_on(on_date, self.LONG_TERM_TIMESPAN)
-            prev_long_term_ma_value = long_term_ma.value_on(on_date-timedelta(1), self.LONG_TERM_TIMESPAN)
-            short_term_ma_value = short_term_ma.value_on(on_date, self.SHORT_TERM_TIMESPAN)
-            prev_short_term_ma_value = short_term_ma.value_on(on_date-timedelta(1), self.SHORT_TERM_TIMESPAN)
+            long_term_ma_value = long_term_ma.value_on(on_date)
+            prev_long_term_ma_value = long_term_ma.value_on(on_date-timedelta(1))
+            short_term_ma_value = short_term_ma.value_on(on_date)
+            prev_short_term_ma_value = short_term_ma.value_on(on_date-timedelta(1))
         except NotEnoughDataException:
             return StockSignal.neutral
 
