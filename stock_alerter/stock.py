@@ -70,13 +70,13 @@ class Stock:
         short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN:]
         prev_short_term_series = closing_price_list[-self.SHORT_TERM_TIMESPAN-1:-1]
 
-        long_term_ma = sum([update.price
+        long_term_ma = sum([update.value
                             for update in long_term_series])/self.LONG_TERM_TIMESPAN
-        prev_long_term_ma = sum([update.price
+        prev_long_term_ma = sum([update.value
                                  for update in prev_long_term_series])/self.LONG_TERM_TIMESPAN
-        short_term_ma = sum([update.price
+        short_term_ma = sum([update.value
                              for update in short_term_series])/self.SHORT_TERM_TIMESPAN
-        prev_short_term_ma = sum([update.price
+        prev_short_term_ma = sum([update.value
                                   for update in prev_short_term_series])/self.SHORT_TERM_TIMESPAN
 
         if self._is_crossover_below_to_above(prev_short_term_ma, prev_long_term_ma,
