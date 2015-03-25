@@ -24,7 +24,6 @@ class Stock:
     def price(self):
         """Returns the current price of the Stock
 
-        >>> stock = Stock("GOOG")
         >>> stock.update(datetime(2011, 10, 3), 10)
         >>> stock.price
         10
@@ -59,7 +58,6 @@ class Stock:
     def update(self, timestamp, price):
         """Updates the stock with the price at the given timestamp
 
-        >>> stock = Stock("GOOG")
         >>> stock.update(datetime(2014, 10, 2), 10)
         >>> stock.price
         10
@@ -81,7 +79,6 @@ class Stock:
 
         Returns False if there have been less than three updates so far
 
-        >>> stock = Stock("GOOG")
         >>> stock.is_increasing_trend()
         False
         """
