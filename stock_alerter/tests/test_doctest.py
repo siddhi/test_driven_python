@@ -14,5 +14,5 @@ def load_tests(loader, tests, pattern):
         "datetime": datetime,
         "Stock": stock.Stock
     }, setUp=setup_stock_doctest))
-    tests.addTests(doctest.DocFileSuite("../readme.txt"))
+    tests.addTests(doctest.DocFileSuite("readme.txt", package="stock_alerter"))
     return tests
