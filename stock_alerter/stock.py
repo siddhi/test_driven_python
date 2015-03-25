@@ -22,6 +22,14 @@ class Stock:
 
     @property
     def price(self):
+        """Returns the current price of the Stock
+
+        >>> from datetime import datetime
+        >>> stock = Stock("GOOG")
+        >>> stock.update(datetime(2011, 10, 3), 10)
+        >>> stock.price
+        10
+        """
         try:
             return self.history[-1].value
         except IndexError:
@@ -54,3 +62,8 @@ class Stock:
             return StockSignal.neutral
 
         return StockSignal.neutral
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
