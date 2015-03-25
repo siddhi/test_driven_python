@@ -5,9 +5,20 @@ from datetime import datetime, timedelta
 from ..stock import Stock, StockSignal
 
 
-def test_price_of_a_new_stock_class_should_be_None():
+def setup_test():
+    global goog
     goog = Stock("GOOG")
+
+
+def teardown_test():
+    global goog
+    goog = None
+
+
+def test_price_of_a_new_stock_class_should_be_None():
     assert goog.price is None
+test_price_of_a_new_stock_class_should_be_None.setup = setup_test
+test_price_of_a_new_stock_class_should_be_None.teardown = teardown_test
 
 
 class StockTest(unittest.TestCase):
