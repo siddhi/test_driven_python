@@ -3,6 +3,7 @@ import collections
 from datetime import datetime, timedelta
 
 from nose2.tools.params import params
+from nose2.tools import such
 
 from ..stock import Stock, StockSignal
 
@@ -50,6 +51,37 @@ def stock_trends_with_consecutive_prices(prices):
     goog = Stock("GOOG")
     given_a_series_of_prices(goog, prices)
     assert goog.is_increasing_trend()
+
+
+with such.A("Stock class") as it:
+
+    @it.has_setup
+    def setup():
+        it.goog = Stock("GOOG")
+
+    with it.having("a price method"):
+        @it.has_setup
+        def setup():
+            it.goog.update(datetime(2014, 2, 12), price=10)
+
+        @it.should("return the price")
+        def test(case):
+            assert it.goog.price == 10
+
+        @it.should("return the latest price")
+        def test(case):
+            it.goog.update(datetime(2014, 2, 11), price=15)
+            assert it.goog.price == 10
+
+    with it.having("a trend method"):
+        @it.should("return True if the last three updates were increasing")
+        def test(case):
+            it.goog.update(datetime(2014, 2, 11), price=12)
+            it.goog.update(datetime(2014, 2, 12), price=13)
+            it.goog.update(datetime(2014, 2, 13), price=14)
+            assert it.goog.is_increasing_trend()
+
+    it.createTests(globals())
 
 
 class StockTest(unittest.TestCase):
