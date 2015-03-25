@@ -72,7 +72,10 @@ class Stock:
         >>> stock.is_increasing_trend()
         False
         """
-        return self.history[-3].value < self.history[-2].value < self.history[-1].value
+        try:
+            return self.history[-3].value < self.history[-2].value < self.history[-1].value
+        except IndexError:
+            return True
 
     def _is_crossover_below_to_above(self, on_date, ma, reference_ma):
         prev_date = on_date - timedelta(1)
