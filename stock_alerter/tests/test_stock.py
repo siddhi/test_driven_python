@@ -41,6 +41,17 @@ def test_stock_trends(prices, expected_output):
     assert goog.is_increasing_trend() == expected_output
 
 
+def test_trend_with_all_consecutive_values_upto_100():
+    for i in range(100):
+        yield stock_trends_with_consecutive_prices, [i, i+1, i+2]
+
+
+def stock_trends_with_consecutive_prices(prices):
+    goog = Stock("GOOG")
+    given_a_series_of_prices(goog, prices)
+    assert goog.is_increasing_trend()
+
+
 class StockTest(unittest.TestCase):
     def setUp(self):
         self.goog = Stock("GOOG")
