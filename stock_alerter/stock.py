@@ -58,6 +58,21 @@ class Stock:
             return None
 
     def update(self, timestamp, price):
+        """Updates the stock with the price at the given timestamp
+
+        >>> from datetime import datetime
+        >>> stock = Stock("GOOG")
+        >>> stock.update(datetime(2014, 10, 2), 10)
+        >>> stock.price
+        10
+
+        The method raises a ValueError exception if the price is negative
+
+        >>> stock.update(datetime(2014, 10, 2), -1)
+        Traceback (most recent call last):
+            ...
+        ValueError: price should not be negative
+        """
         if price < 0:
             raise ValueError("price should not be negative")
         self.history.update(timestamp, price)
