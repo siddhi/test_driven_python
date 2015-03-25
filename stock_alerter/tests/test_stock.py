@@ -5,6 +5,11 @@ from datetime import datetime, timedelta
 from ..stock import Stock, StockSignal
 
 
+def test_price_of_a_new_stock_class_should_be_None():
+    goog = Stock("GOOG")
+    assert goog.price is None
+
+
 class StockTest(unittest.TestCase):
     def setUp(self):
         self.goog = Stock("GOOG")
