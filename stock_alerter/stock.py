@@ -24,7 +24,6 @@ class Stock:
     def price(self):
         """Returns the current price of the Stock
 
-        >>> from datetime import datetime
         >>> stock = Stock("GOOG")
         >>> stock.update(datetime(2011, 10, 3), 10)
         >>> stock.price
@@ -60,7 +59,6 @@ class Stock:
     def update(self, timestamp, price):
         """Updates the stock with the price at the given timestamp
 
-        >>> from datetime import datetime
         >>> stock = Stock("GOOG")
         >>> stock.update(datetime(2014, 10, 2), 10)
         >>> stock.price
