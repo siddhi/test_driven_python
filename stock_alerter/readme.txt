@@ -8,7 +8,7 @@ are going to be processed. A simple dictionary will do.
 
 >>> from stock_alerter.stock import Stock
 >>> exchange = {"GOOG": Stock("GOOG"), "AAPL": Stock("AAPL")}
->>> for key in sorted(exchange.keys()): #doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+>>> for key in sorted(exchange.keys()):
 ...    print(key, exchange[key])
 ...    
 AAPL       <stock_alerter.stock.Stock object at 0x0...>
