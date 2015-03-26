@@ -46,6 +46,7 @@ class AlertTest(unittest.TestCase):
         alert = Alert("sample alert", rule, action)
         alert.connect(exchange)
         goog.update(datetime(2014, 5, 14), 11)
-        main_mock.assert_has_calls(
-            [mock.call.rule.matches(exchange),
-             mock.call.action.execute("sample alert")])
+        self.assertEqual([mock.call.rule.depends_on(),
+                          mock.call.rule.matches(exchange),
+                          mock.call.action.execute("sample alert")],
+                         main_mock.mock_calls)
