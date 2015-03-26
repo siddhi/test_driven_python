@@ -1,3 +1,4 @@
+import sys
 import unittest
 import collections
 from datetime import datetime, timedelta
@@ -5,12 +6,12 @@ from datetime import datetime, timedelta
 from ..stock import Stock, StockSignal
 
 
-def suite():
-    loader = unittest.TestLoader()
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(StockTest("test_stock_update"))
-    test_suite.addTest(loader.loadTestsFromTestCase(StockCrossOverSignalTest))
-    return test_suite
+def load_tests(loader, tests, pattern):
+    suite = unittest.TestSuite()
+    suite.addTest(loader.loadTestsFromTestCase(StockTest))
+    if not sys.platform.startswith("win"):
+        suite.addTest(loader.loadTestsFromTestCase(StockCrossOverSignalTest))
+    return suite
 
 
 class StockTest(unittest.TestCase):
