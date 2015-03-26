@@ -5,6 +5,12 @@ from datetime import datetime, timedelta
 from ..stock import Stock, StockSignal
 
 
+def suite():
+    test_suite = unittest.TestSuite()
+    test_suite.addTest(StockTest("test_stock_update"))
+    return test_suite
+
+
 class StockTest(unittest.TestCase):
     def setUp(self):
         self.goog = Stock("GOOG")
