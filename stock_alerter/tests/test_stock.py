@@ -12,15 +12,14 @@ class StockTest(unittest.TestCase):
     def test_price_of_a_new_stock_class_should_be_None(self):
         self.assertIsNone(self.goog.price)
 
+    @unittest.expectedFailure
     def test_stock_update(self):
         """An update should set the price on the stock object
 
         We will be  using the `datetime` module for the timestamp
         """
         self.goog.update(datetime(2014, 2, 12), price=10)
-        self.assertEqual(10, self.goog.price)
-
-    test_stock_update.slow = True
+        self.assertEqual(100, self.goog.price)
 
     def test_negative_price_should_throw_ValueError(self):
         with self.assertRaises(ValueError):
