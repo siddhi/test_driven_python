@@ -34,3 +34,18 @@ class AlertTest(unittest.TestCase):
         alert.check_rule(goog)
         rule_spy.matches.assert_called_with(exchange)
         self.assertFalse(action.execute.called)
+
+    def test_action_fires_when_rule_matches(self):
+        goog = Stock("GOOG")
+        exchange = {"GOOG": goog}
+        main_mock = mock.MagicMock()
+        rule = main_mock.rule
+        rule.matches.return_value = True
+        rule.depends_on.return_value = {"GOOG"}
+        action = main_mock.action
+        alert = Alert("sample alert", rule, action)
+        alert.connect(exchange)
+        goog.update(datetime(2014, 5, 14), 11)
+        main_mock.assert_has_calls(
+            [mock.call.rule.matches(exchange),
+             mock.call.action.execute("sample alert")])
