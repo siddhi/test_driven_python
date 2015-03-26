@@ -1,4 +1,3 @@
-import sys
 import unittest
 import collections
 from datetime import datetime, timedelta
@@ -13,7 +12,6 @@ class StockTest(unittest.TestCase):
     def test_price_of_a_new_stock_class_should_be_None(self):
         self.assertIsNone(self.goog.price)
 
-    @unittest.skipIf(sys.platform.startswith("win"), "skip on windows")
     def test_stock_update(self):
         """An update should set the price on the stock object
 
@@ -22,7 +20,8 @@ class StockTest(unittest.TestCase):
         self.goog.update(datetime(2014, 2, 12), price=10)
         self.assertEqual(10, self.goog.price)
 
-    @unittest.skipUnless(sys.platform.startswith("win"), "only run on windows")
+    test_stock_update.slow = True
+
     def test_negative_price_should_throw_ValueError(self):
         with self.assertRaises(ValueError):
             self.goog.update(datetime(2014, 2, 13), -1)
