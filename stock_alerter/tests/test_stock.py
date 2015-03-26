@@ -1,17 +1,8 @@
-import sys
 import unittest
 import collections
 from datetime import datetime, timedelta
 
 from ..stock import Stock, StockSignal
-
-
-def load_tests(loader, tests, pattern):
-    suite = unittest.TestSuite()
-    suite.addTest(loader.loadTestsFromTestCase(StockTest))
-    if not sys.platform.startswith("win"):
-        suite.addTest(loader.loadTestsFromTestCase(StockCrossOverSignalTest))
-    return suite
 
 
 class StockTest(unittest.TestCase):
@@ -21,6 +12,7 @@ class StockTest(unittest.TestCase):
     def test_price_of_a_new_stock_class_should_be_None(self):
         self.assertIsNone(self.goog.price)
 
+    @unittest.skip("skip this test for now")
     def test_stock_update(self):
         """An update should set the price on the stock object
 
