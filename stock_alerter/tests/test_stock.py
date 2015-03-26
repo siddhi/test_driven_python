@@ -12,14 +12,13 @@ class StockTest(unittest.TestCase):
     def test_price_of_a_new_stock_class_should_be_None(self):
         self.assertIsNone(self.goog.price)
 
-    @unittest.expectedFailure
     def test_stock_update(self):
         """An update should set the price on the stock object
 
         We will be  using the `datetime` module for the timestamp
         """
         self.goog.update(datetime(2014, 2, 12), price=10)
-        self.assertEqual(100, self.goog.price)
+        self.assertEqual(10, self.goog.price)
 
     def test_negative_price_should_throw_ValueError(self):
         with self.assertRaises(ValueError):
@@ -37,26 +36,24 @@ class StockTest(unittest.TestCase):
 
 
 class StockTrendTest(unittest.TestCase):
-    def setUp(self):
-        self.goog = Stock("GOOG")
-
-    def given_a_series_of_prices(self, prices):
+    def given_a_series_of_prices(self, goog, prices):
         timestamps = [datetime(2014, 2, 10), datetime(2014, 2, 11),
                       datetime(2014, 2, 12), datetime(2014, 2, 13)]
         for timestamp, price in zip(timestamps, prices):
-            self.goog.update(timestamp, price)
+            goog.update(timestamp, price)
 
-    def test_increasing_trend_is_true_if_price_increase_for_3_updates(self):
-        self.given_a_series_of_prices([8, 10, 12])
-        self.assertTrue(self.goog.is_increasing_trend())
-
-    def test_increasing_trend_is_false_if_price_decreases(self):
-        self.given_a_series_of_prices([8, 12, 10])
-        self.assertFalse(self.goog.is_increasing_trend())
-
-    def test_increasing_trend_is_false_if_price_equal(self):
-        self.given_a_series_of_prices([8, 10, 10])
-        self.assertFalse(self.goog.is_increasing_trend())
+    def test_stock_trends(self):
+        dataset = [
+            ([8, 10, 12], True),
+            ([8, 12, 10], False),
+            ([8, 10, 10], False)
+        ]
+        for data in dataset:
+            prices, output = data
+            with self.subTest(prices=prices, output=output):
+                goog = Stock("GOOG")
+                self.given_a_series_of_prices(goog, prices)
+                self.assertEqual(output, goog.is_increasing_trend())
 
 
 class StockCrossOverSignalTest(unittest.TestCase):
