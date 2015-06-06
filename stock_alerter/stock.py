@@ -20,6 +20,10 @@ class Stock:
         self.history = TimeSeries()
         self.updated = Event()
 
+    def __str__(self):
+        class_name = type(self).__name__
+        return '{}("{}")'.format(class_name, self.symbol)
+
     @property
     def price(self):
         """Returns the current price of the Stock
