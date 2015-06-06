@@ -17,7 +17,7 @@ class EmailAction:
     def execute(self, content):
         message = MIMEText(content)
         message["Subject"] = "New Stock Alert"
-        message["From"] = "alerts@stocks.com"
+        message["From"] = self.from_email
         message["To"] = self.to_email
         smtp = smtplib.SMTP("email.stocks.com")
         try:
