@@ -1,7 +1,7 @@
 Test Driven Python Development
 ==============================
 
-This repository contains the code for the book `Test Driven Python Development <http://www.amazon.in/Test-Driven-Python-Development-Siddharta-Govindaraj/dp/1783987928/>`. 
+This repository contains the code for the book `Test Driven Python Development <http://www.amazon.com/Test-Driven-Python-Development-Siddharta-Govindaraj/dp/1783987928/>`. 
 
 How to use this repository
 --------------------------
