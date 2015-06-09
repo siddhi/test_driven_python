@@ -1,4 +1,4 @@
-import unittest
+import unittest2 as unittest
 import collections
 from datetime import datetime, timedelta
 
@@ -9,25 +9,18 @@ class StockTest(unittest.TestCase):
     def setUp(self):
         self.goog = Stock("GOOG")
 
-    def test_price_of_a_new_stock_class_should_be_None(self):
-        self.assertIsNone(self.goog.price)
-
     def test_stock_update(self):
-        """An update should set the price on the stock object
-
-        We will be  using the `datetime` module for the timestamp
-        """
         self.goog.update(datetime(2014, 2, 12), price=10)
         self.assertEqual(10, self.goog.price)
 
     def test_negative_price_should_throw_ValueError(self):
-        with self.assertRaises(ValueError):
-            self.goog.update(datetime(2014, 2, 13), -1)
+        self.assertRaises(ValueError, self.goog.update,
+                          datetime(2014, 2, 13), -1)
 
     def test_stock_price_should_give_the_latest_price(self):
         self.goog.update(datetime(2014, 2, 12), price=10)
         self.goog.update(datetime(2014, 2, 13), price=8.4)
-        self.assertAlmostEqual(8.4, self.goog.price, delta=0.0001)
+        self.assertAlmostEqual(8.4, self.goog.price, places=4)
 
     def test_price_is_the_latest_even_if_updates_are_made_out_of_order(self):
         self.goog.update(datetime(2014, 2, 13), price=8)
@@ -36,11 +29,11 @@ class StockTest(unittest.TestCase):
 
 
 class StockTrendTest(unittest.TestCase):
-    def given_a_series_of_prices(self, goog, prices):
+    def given_a_series_of_prices(self, stock, prices):
         timestamps = [datetime(2014, 2, 10), datetime(2014, 2, 11),
                       datetime(2014, 2, 12), datetime(2014, 2, 13)]
         for timestamp, price in zip(timestamps, prices):
-            goog.update(timestamp, price)
+            stock.update(timestamp, price)
 
     def test_stock_trends(self):
         dataset = [

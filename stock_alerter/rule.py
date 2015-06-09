@@ -14,10 +14,30 @@ class PriceRule:
         return self.condition(stock) if stock.price else False
 
     def depends_on(self):
-        return {self.symbol}
+        return set([self.symbol])
+
+
+class TrendRule:
+    """TrendRule is a rule that triggers when a stock price satisfies a
+    trend (for now the only trend supported is 3 increasing updates)"""
+
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+    def matches(self, exchange):
+        try:
+            stock = exchange[self.symbol]
+        except KeyError:
+            return False
+        return stock.is_increasing_trend()
+
+    def depends_on(self):
+        return set([self.symbol])
 
 
 class AndRule:
+    """AndRule triggers when all its component rules are true"""
+
     def __init__(self, *args):
         self.rules = args
 

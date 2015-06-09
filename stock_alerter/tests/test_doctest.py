@@ -1,6 +1,5 @@
 import doctest
 from datetime import datetime
-
 from stock_alerter import stock
 
 
@@ -15,5 +14,7 @@ def load_tests(loader, tests, pattern):
         "Stock": stock.Stock
     }, setUp=setup_stock_doctest))
     options = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
-    tests.addTests(doctest.DocFileSuite("readme.txt", package="stock_alerter", optionflags=options))
+    tests.addTests(doctest.DocFileSuite("readme.txt",
+                                        package="stock_alerter",
+                                        optionflags=options))
     return tests

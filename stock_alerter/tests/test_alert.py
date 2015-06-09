@@ -1,11 +1,11 @@
 import unittest
-from unittest import mock
 from datetime import datetime
+import mock
 
 from ..alert import Alert
 from ..rule import PriceRule
-from ..stock import Stock
 from ..event import Event
+from ..stock import Stock
 
 
 class AlertTest(unittest.TestCase):
@@ -16,7 +16,7 @@ class AlertTest(unittest.TestCase):
         exchange = {"GOOG": goog}
         rule = mock.MagicMock(spec=PriceRule)
         rule.matches.return_value = True
-        rule.depends_on.return_value = {"GOOG"}
+        rule.depends_on.return_value = set(["GOOG"])
         action = mock.MagicMock()
         alert = Alert("sample alert", rule, action)
         alert.connect(exchange)
@@ -41,7 +41,7 @@ class AlertTest(unittest.TestCase):
         main_mock = mock.MagicMock()
         rule = main_mock.rule
         rule.matches.return_value = True
-        rule.depends_on.return_value = {"GOOG"}
+        rule.depends_on.return_value = set(["GOOG"])
         action = main_mock.action
         alert = Alert("sample alert", rule, action)
         alert.connect(exchange)

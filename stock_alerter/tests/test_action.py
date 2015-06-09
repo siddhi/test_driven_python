@@ -1,8 +1,9 @@
+from __future__ import print_function
 import smtplib
-import unittest
-from unittest import mock
+import unittest2 as unittest
+import mock
 
-from ..action import PrintAction, EmailAction
+from ..action import EmailAction, PrintAction
 
 
 class MessageMatcher:
@@ -16,7 +17,18 @@ class MessageMatcher:
             self.expected["Message"] == other._payload
 
 
-@mock.patch("builtins.print")
+class AlertMessageMatcher:
+    def __init__(self, expected):
+        self.expected = expected
+
+    def __eq__(self, other):
+        return "New Stock Alert" == other["Subject"] and \
+            self.expected["From"] == other["From"] and \
+            self.expected["To"] == other["To"] and \
+            self.expected["Message"] == other._payload
+
+
+@mock.patch("__builtin__.print")
 class PrintActionTest(unittest.TestCase):
     def test_executing_action_prints_message(self, mock_print):
         action = PrintAction()

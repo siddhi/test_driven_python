@@ -1,3 +1,4 @@
+from __future__ import print_function
 import smtplib
 from email.mime.text import MIMEText
 
@@ -17,7 +18,7 @@ class EmailAction:
     def execute(self, content):
         message = MIMEText(content)
         message["Subject"] = "New Stock Alert"
-        message["From"] = self.from_email
+        message["From"] = "alerts@stocks.com"
         message["To"] = self.to_email
         smtp = smtplib.SMTP("email.stocks.com")
         try:
